@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 import database 
 import os
 
@@ -41,6 +42,14 @@ Base.metadata.create_all(bind=engine)
 
 # Inicializando a API
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Modelo para entrada de dados
 class Produto(BaseModel):

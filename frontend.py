@@ -4,15 +4,29 @@ import pandas as pd
 
 API_URL = "http://127.0.0.1:8000"
 
+headers = {
+    "User-Agent": "Mozilla/5.0"
+}
+
 st.title("📦 Controle de Estoque - SAD")
 
 # Listar produtos
 st.subheader("📋 Produtos em Estoque")
 if st.button("🔄 Atualizar Lista"):
-    response = requests.get(f"{API_URL}/produtos/")
-    produtos = response.json()
-    df = pd.DataFrame(produtos)
-    st.table(df)
+    response = requests.get(f"{API_URL}/produtos/", headers=headers)
+    print(response.text)
+    if response.status_code == 200 and response.text.strip():
+        try:
+            produtos = response.json()
+            if produtos:
+                df = pd.DataFrame(produtos)
+                st.table(df)
+            else:
+                st.warning("Nenhum produto encontrado.")
+        except requests.exceptions.JSONDecodeError:
+            st.error("Erro ao processar os dados do servidor.")
+    else:
+        st.warning("Nenhum dado retornado pelo servidor.")
 
 # Adicionar produto
 st.subheader("➕ Adicionar Novo Produto")
