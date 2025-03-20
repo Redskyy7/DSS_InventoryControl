@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 import database 
 import os
 
@@ -45,9 +46,9 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://127.0.0.1:8501", "http://localhost:8501"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
 
@@ -73,6 +74,10 @@ def listar_produtos():
     db = SessionLocal()
     produtos = db.query(ProdutoDB).all()
     db.close()
+
+    if not produtos:
+        return JSONResponse(content={"mensagem": "Nenhum produto encontrado"}, status_code=200)
+
     return [{"id": p.id, "nome": p.nome, "estoque": p.estoque, "preco": p.preco} for p in produtos]
 
 # Endpoint para atualizar o estoque
