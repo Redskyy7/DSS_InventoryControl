@@ -3,9 +3,25 @@ from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
+import database 
+import os
 
 # Configuração do PostgreSQL
-DATABASE_URL = "postgresql://estoque_user:senha123@localhost/estoque_db"
+load_dotenv()
+
+# Configuração do banco de dados PostgreSQL usando o DB_CONFIG
+DB_CONFIG = {
+    "host": "localhost",
+    "database": "estoque_db",
+    "user": "postgres",
+    "password": "teste123",
+    "port": 5432
+}
+
+database.criar_banco(DB_CONFIG)
+
+# Criação da URL de conexão do PostgreSQL
+DATABASE_URL = f"postgresql://{DB_CONFIG['user']}:{DB_CONFIG['password']}@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}"
 
 # Criando conexão com o banco
 engine = create_engine(DATABASE_URL)
