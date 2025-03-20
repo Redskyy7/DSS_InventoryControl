@@ -1,0 +1,36 @@
+# Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Virtual environment folder (adjust the folder name based on your environment name)
+venv/
+.env/
+.env
+
+# IDE/editor configuration files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Selenium-related files
+*.log
+*.png  # if you're saving screenshots in .png format
+*.jpg  # if you're saving screenshots in .jpg format
+
+# System-specific files (MacOS/Windows)
+.DS_Store
+Thumbs.db
+
+# Other Python-specific exclusions
+*.egg
+*.egg-info/
+dist/
+build/
+*.manifest
+*.spec
