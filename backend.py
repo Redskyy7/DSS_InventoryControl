@@ -16,8 +16,8 @@ DB_CONFIG = {
     "host": "localhost",
     "database": "estoque_db",
     "user": "postgres",
-    "password": "teste123",
-    "port": 5432
+    "password": "meow",
+    "port": 5433
 }
 
 database.criar_banco(DB_CONFIG)
@@ -75,11 +75,8 @@ def listar_produtos():
     produtos = db.query(ProdutoDB).all()
     db.close()
 
-    if not produtos:
-        return JSONResponse(content={"mensagem": "Nenhum produto encontrado"}, status_code=200)
-
     return [{"id": p.id, "nome": p.nome, "estoque": p.estoque, "preco": p.preco} for p in produtos]
-
+""
 # Endpoint para atualizar o estoque
 @app.put("/produtos/{produto_id}")
 def atualizar_estoque(produto_id: int, novo_estoque: int):

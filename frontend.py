@@ -14,12 +14,12 @@ st.title("📦 Controle de Estoque - SAD")
 st.subheader("📋 Produtos em Estoque")
 if st.button("🔄 Atualizar Lista"):
     response = requests.get(f"{API_URL}/produtos/", headers=headers)
-    print(response.text)
     if response.status_code == 200 and response.text.strip():
         try:
             produtos = response.json()
             if produtos:
                 df = pd.DataFrame(produtos)
+                df["preco"] = df["preco"].apply(lambda x: f"R$ {x:.2f}")
                 st.table(df)
             else:
                 st.warning("Nenhum produto encontrado.")
@@ -39,13 +39,13 @@ if st.button("Adicionar Produto"):
         st.success(response.json()["mensagem"])
     else:
         st.error("Preencha os campos corretamente!")
-
+        
 # Atualizar estoque
 st.subheader("🔄 Atualizar Estoque")
 produto_id = st.number_input("ID do Produto", min_value=1)
 novo_estoque = st.number_input("Novo Estoque", min_value=0)
 if st.button("Atualizar Estoque"):
-    response = requests.put(f"{API_URL}/produtos/{produto_id}", json={"novo_estoque": novo_estoque})
+    response = requests.put(f"{API_URL}/produtos/{produto_id}?novo_estoque={novo_estoque}")
     st.success(response.json()["mensagem"])
 
 # Deletar produto
