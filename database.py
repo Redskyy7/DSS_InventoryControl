@@ -2,7 +2,7 @@ import psycopg2
 
 def criar_banco(db_config):
     conn = psycopg2.connect(
-        dbname="postgres",
+        dbname=db_config["database"],
         user=db_config["user"],
         password=db_config["password"],
         host=db_config["host"],

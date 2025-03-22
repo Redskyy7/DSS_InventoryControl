@@ -11,13 +11,12 @@ import os
 # Configuração do PostgreSQL
 load_dotenv()
 
-# Configuração do banco de dados PostgreSQL usando o DB_CONFIG
 DB_CONFIG = {
-    "host": "localhost",
-    "database": "estoque_db",
-    "user": "postgres",
-    "password": "meow",
-    "port": 5433
+    "host": os.getenv("PGHOST"),
+    "database": os.getenv("PGDATABASE"),
+    "user": os.getenv("PGUSER"),
+    "password": os.getenv("PGPASSWORD"),
+    "port": os.getenv("PGPORT")
 }
 
 database.criar_banco(DB_CONFIG)
