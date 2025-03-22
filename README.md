@@ -1,5 +1,9 @@
 # 📦 DSS_InventoryControl
 
+## Create a virtual environment
+
+python -m venv venv
+
 ## Running the backend
 
 ### **uvicorn** backend:app --reload
