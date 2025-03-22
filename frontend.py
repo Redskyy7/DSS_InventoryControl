@@ -1,12 +1,14 @@
 import streamlit as st
 import requests
 import pandas as pd
+import matplotlib.pyplot as plt
 
 API_URL = "http://127.0.0.1:8000"
 
 headers = {
     "User-Agent": "Mozilla/5.0"
 }
+
 
 st.title("📦 Controle de Estoque - SAD")
 
@@ -21,6 +23,22 @@ if st.button("🔄 Atualizar Lista"):
                 df = pd.DataFrame(produtos)
                 df["preco"] = df["preco"].apply(lambda x: f"R$ {x:.2f}")
                 st.table(df)
+
+                # Alerta para estoque baixo (menos de 5 unidades)   
+                estoque_minimo = 5
+                produtos_baixo_estoque = df[df["estoque"] < estoque_minimo]
+                if not produtos_baixo_estoque.empty:
+                    st.warning("⚠️ Atenção! Os seguintes produtos estão com estoque baixo (Menor que 5 unidades):")
+                    st.table(produtos_baixo_estoque)
+                
+                # 📈 Visualização gráfica do estoque
+                st.subheader("📊 Visão Geral do Estoque")
+                fig, ax = plt.subplots()
+                ax.bar(df["nome"], df["estoque"], color="blue")
+                ax.set_ylabel("Quantidade em Estoque")
+                ax.set_title("Estoque Atual")
+                plt.xticks(rotation=45, ha="right")
+                st.pyplot(fig)
             else:
                 st.warning("Nenhum produto encontrado.")
         except requests.exceptions.JSONDecodeError:
